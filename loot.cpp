@@ -7,13 +7,13 @@
 #include<vector>
 #include<fstream>
 using namespace std;
-vector<string> KindList,RarityList;
-void InitKindList(ifstream &in){
+vector<string> TypeList,RarityList;
+void InitTypeList(ifstream &in){
 	string list="1";
 	if(in.is_open()){
 		while(list!=""){
 			getline(in,list);
-			KindList.push_back(list);
+			TypeList.push_back(list);
 		}
 		in.close();
 	}
@@ -50,12 +50,12 @@ int MakeDice(int face,int num){
 	}
 	return sum;
 }
-void GoodsKind(int face,int num){
+void ItemType(int face,int num){
 	int dice=MakeDice(face,num);
-	string s=KindList[dice-1];
+	string s=TypeList[dice-1];
 	cout<<s;
 }
-void GoodsRarity(int face,int num){
+void ItemRarity(int face,int num){
 	int dice=MakeDice(face,num);
 	string s=RarityList[dice-1];
 	cout<<s;
@@ -63,8 +63,8 @@ void GoodsRarity(int face,int num){
 int main(){
 	printf("搜刮软件启动\n");
 	printf("正在初始化物品表~\n");
-	ifstream KindIn("KindList.txt");
-	InitKindList(KindIn);
+	ifstream TypeIn("TypeList.txt");
+	InitTypeList(TypeIn);
 	ifstream RarityIn("RarityList.txt");
 	InitRarityList(RarityIn);
 	printf("物品表初始化完成:)\n");
@@ -92,8 +92,8 @@ int main(){
 			printf("输入错误,请重新输入\n\n");
 			continue;
 		}
-		GoodsRarity(8,1);
-		GoodsKind(8,1);
+		ItemRarity(8,1);
+		ItemType(8,1);
 		printf("\n\n");
 	}
 }
