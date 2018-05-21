@@ -1,4 +1,4 @@
-#include<cstdio>
+ï»¿#include<cstdio>
 #include<iostream>
 #include<cstdlib>
 #include<ctime>
@@ -7,40 +7,8 @@
 #include<vector>
 #include<fstream>
 using namespace std;
-vector<string> TypeList,RarityList;
-void InitTypeList(ifstream &in){
-	string list="1";
-	if(in.is_open()){
-		while(list!=""){
-			getline(in,list);
-			TypeList.push_back(list);
-		}
-		in.close();
-	}
-	else{
-		printf("ÎïÆ·±í³õÊ¼»¯´íÎó£¬ÊäÈëÈÎÒâ¼üÍË³ö\n");
-		fflush(stdin);
-		getchar();
-		exit(-1);
-	}
-}
-void InitRarityList(ifstream &in){
-	string list="1";
-	if(in.is_open()){
-		while(list!=""){
-			getline(in,list);
-			RarityList.push_back(list);
-		}
-		
-		in.close();
-	}
-	else{
-		printf("Ï¡ÓĞ¶È±í³õÊ¼»¯´íÎó£¬ÊäÈëÈÎÒâ¼üÍË³ö\n");
-		fflush(stdin);
-		getchar();
-		exit(-1);
-	}
-}
+vector<string> ItemList,TypeList,RarityList;
+map<string, vector<string>> ;
 int MakeDice(int face,int num){
 	int sum=0;
 	srand((unsigned)time(NULL));
@@ -50,50 +18,28 @@ int MakeDice(int face,int num){
 	}
 	return sum;
 }
-void ItemType(int face,int num){
-	int dice=MakeDice(face,num);
-	string s=TypeList[dice-1];
-	cout<<s;
-}
-void ItemRarity(int face,int num){
-	int dice=MakeDice(face,num);
-	string s=RarityList[dice-1];
-	cout<<s;
+void InitItem(){
+	string addr="ItemType.txt";
+	string ItemType;
+	ifstream In(addr);
+	if(In.is_open()){
+		while(getline(In,ItemType)){
+			ItemList.push_back(ItemType);
+			cout<<ItemType<<endl;
+		}
+		In.close();
+	}
+	else {
+		printf("ç‰©å“è¡¨åˆå§‹åŒ–é”™è¯¯ï¼Œè¾“å…¥ä»»æ„é”®é€€å‡º\n");
+		fflush(stdin);
+		getchar();
+		exit(-1);
+	}
 }
 int main(){
-	printf("ËÑ¹ÎÈí¼şÆô¶¯\n");
-	printf("ÕıÔÚ³õÊ¼»¯ÎïÆ·±í~\n");
-	ifstream TypeIn("TypeList.txt");
-	InitTypeList(TypeIn);
-	ifstream RarityIn("RarityList.txt");
-	InitRarityList(RarityIn);
-	printf("ÎïÆ·±í³õÊ¼»¯Íê³É:)\n");
-	printf("*****************·Ö¸îÏß*****************\n");
-	while(1){
-		int dice;
-		printf("ÇëÊäÈëÍæ¼Ò÷»×ÓµãÊı\n´óÓÚ8µãÇëÊäÈë8\n");
-		cin>>dice; 
-		if(dice>=1&&dice<=3){
-			printf("Ã»ÓĞÊÕ»ñ\n");
-		}
-		else if(dice>=4&&dice<=5){
-			printf("»ñµÃÁË£¬1¸ö");
-			//one 
-		}
-		else if(dice>=6&&dice<=7){
-			printf("»ñµÃÁË£¬2¸ö");
-			//two
-		}
-		else if(dice==8){
-			printf("»ñµÃÁË£¬3¸ö");
-			//
-		}
-		else{
-			printf("ÊäÈë´íÎó,ÇëÖØĞÂÊäÈë\n\n");
-			continue;
-		}
-		ItemRarity(8,1);
-		ItemType(8,1);
-		printf("\n\n");
-	}
+	printf("æœåˆ®è½¯ä»¶å¯åŠ¨\n");
+	printf("æ­£åœ¨åˆå§‹åŒ–ç‰©å“è¡¨~\n");
+	printf("ç‰©å“è¡¨åˆå§‹åŒ–å®Œæˆ:)\n");
+	printf("**********************åˆ†å‰²çº¿**********************\n");
+	getchar();
 }

@@ -1,0 +1,6 @@
+Rarity1
+Rarity2
+Rarity3
+Rarity4
+Rarity5
+Rarity6
