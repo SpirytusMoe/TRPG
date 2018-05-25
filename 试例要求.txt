@@ -1,0 +1,8 @@
+ItemType.txt：内为物品种类，数量不限，但是要与ItemType的文件夹数量、名称一一对应
+ItemRoll.txt：为不同种类物品的roll点，前一个值为下限，后一个为上限，数量名称要求同上
+ItemRarity.txt：为稀有度种类，可改写成普通、稀有之类的，要和ItemType里某ItemType文件夹内的文本文件对应。
+VarityRoll.txt：要求同ItemRoll
+VarityXXX.txt：内为具体的物品名称，数量不限
+XXXDice.txt：为骰子种类，第一个数为骰子数量，第二个为面数
+
+所有文本文件，不得有多余的空白行，空格，均需要按预设格式填写。

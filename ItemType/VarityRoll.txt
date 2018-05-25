@@ -1,0 +1,6 @@
+1 2 Varity1
+3 4 Varity2
+5 5 Varity3
+6 6 Varity4
+7 7 Varity5
+8 8 Varity6
