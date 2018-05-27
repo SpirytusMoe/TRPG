@@ -6,28 +6,28 @@
 #include<string>
 #include<vector>
 #include<fstream>
+#include<iostream>
+#include<Windows.h>
 using namespace std;
 vector<vector<string> > TypeList(10);
-//map<string, vector<string>> ;
-map<int, string> ItemRoll, VarityRoll;
+map<int, string> ItemRoll, VarityRoll,ItemNumRoll;
 struct dice{
 	int face;
 	int num;
 };
 map<string, dice> dicemap;
-int MakeDice(int num,int face){
+int MakeDice(dice d){
+	int num = d.num;
+	int face = d.face;
 	int sum=0;
-	srand((unsigned)time(NULL));
 	if (face != 100) {
 		for(int i=0;i<num;i++){
-			srand((unsigned)time(NULL));
 			int tmp=rand()%(face)+1;
 			sum+=tmp;
 		}
 	}
 	else {
 		for (int i = 0; i<num; i++) {
-			srand((unsigned)time(NULL));
 			int tmp = rand() % (face + 1);
 			sum += tmp;
 		}
@@ -99,27 +99,76 @@ map<int, string> ReadRoll(string addr) {
 	}
 }
 void InitVarity() {
-	string addr = "ItemRarity.txt";
-	string fdice = "./ItemType/VarityDice.txt";
-	vector<string> VarityList = ReadList(addr);
-	TypeList[1]=VarityList;
+//	string addr = "ItemRarity.txt";
+	string fdice = "./Dice/VarityDice.txt";
+//	vector<string> VarityList = ReadList(addr);
+//	TypeList[1]=VarityList;
 	dicemap["Varity"] = ReadDice(fdice);
 	VarityRoll = ReadRoll("./ItemType/VarityRoll.txt");
 }
 void InitItem(){
-	string addr="ItemType.txt";
-	string fdice = "./ItemType/ItemTypeDice.txt";
-	vector<string> ItemList=ReadList(addr);
-	TypeList[0]=ItemList;
-	dicemap["Itemtype"] = ReadDice(fdice);
+	string fdice = "./Dice/ItemTypeDice.txt";
+	string ndice = "./Dice/ItemNumDice.txt";
+	dicemap["ItemType"] = ReadDice(fdice);
+	dicemap["ItemNum"] = ReadDice(ndice);
 	ItemRoll = ReadRoll("./ItemType/ItemRoll.txt");
+	ItemNumRoll = ReadRoll("./ItemType/ItemNumRoll.txt");
+}
+string MakeAddr() {
+	dice type = dicemap["ItemType"];
+	dice Varity = dicemap["Varity"];
+	int ip = MakeDice(type);
+	int vp = MakeDice(Varity);
+	string TypeName=ItemRoll[ip];
+	string VarityName=VarityRoll[vp];
+	string result = "./ItemType/" + TypeName + "/" + VarityName + ".txt";
+	return result;
+}
+void Choose(string addr) {
+	ifstream In(addr);
+	if (In.is_open()) {
+		vector<string> It;
+		string tmp;
+		while (getline(In, tmp)) {
+			It.push_back(tmp);
+		}
+		int high = It.size() - 1;
+		srand((unsigned)time(NULL));
+		string res=It[rand() % (high + 1)];
+		cout << "获取了 " << res << endl<<endl;
+	}
+	else {
+		printf("物品随机初始化错误，输入任意键退出\n");
+		fflush(stdin);
+		getchar();
+		exit(-4);
+	}
+	
 }
 int main(){
 	printf("搜刮软件启动\n");
 	printf("正在初始化物品表~\n");
 	InitItem();
 	InitVarity();
-	printf("物品表初始化完成:)\n");
+	printf("物品表初始化完成,按下任意键开始\n");
 	printf("**********************分割线**********************\n");
 	getchar();
+	srand((unsigned)time(NULL));
+	unsigned int cnt = 0;
+	while (1) {
+		printf("冒险者~需要探索么？\n\n按下任意键开始一轮探索\n");
+		getchar();
+		dice d = dicemap["ItemNum"];
+		int cnt=stoi(ItemNumRoll[MakeDice(d)]);
+		printf("共探索出 %d 件物品\n\n", cnt);
+		for (int i = 0; i < cnt; i++) {
+			Choose(MakeAddr());
+		}
+		printf("\n\n======================分割线======================\n\n");
+		cnt++;
+		if (cnt > 20) {
+			srand((unsigned)time(NULL)+cnt);
+			cnt = 0;
+		}
+	}
 }

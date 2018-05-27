@@ -1,5 +1,0 @@
-ItemType1
-ItemType2
-ItemType3
-ItemType4
-ItemType5
